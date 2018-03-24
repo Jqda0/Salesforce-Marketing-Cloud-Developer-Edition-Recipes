@@ -29,6 +29,8 @@ Before you can perform an Automation, you will need to use the following SOAP re
 
 Obviously, if you are programatically starting a specific Automation (or Automations) on a recurring basis, then you will only need to retrieve the `ObjectID` once as it won't change.
 
+This is the standard template to retrieve the automation object id
+
     <?xml version="1.0" encoding="utf-8"?>
     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
        <soapenv:Header>
@@ -53,6 +55,42 @@ Obviously, if you are programatically starting a specific Automation (or Automat
                 </RetrieveRequest>
             </RetrieveRequestMsg>
        </soapenv:Body>
+    </soapenv:Envelope>
+
+This is the OAUTH template to retrieve the automation object id with business units
+
+    <soapenv:Envelope
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <soapenv:Header>
+            <fueloauth
+                xmlns="http://exacttarget.com">accessToken
+            </fueloauth>
+        </soapenv:Header>
+        <soapenv:Body>
+            <RetrieveRequestMsg
+                xmlns="http://exacttarget.com/wsdl/partnerAPI">
+                <RetrieveRequest>
+                    <ClientIDs>
+                        <ID>MID</ID>
+                    </ClientIDs>
+                    <ObjectType>Automation</ObjectType>
+                    <Properties>ProgramID</Properties>
+                    <Properties>Name</Properties>
+                    <Properties>Status</Properties>
+                    <Properties>IsActive</Properties>
+                    <Properties>AutomationType</Properties>
+                    <Properties>ScheduledTime</Properties>
+                    <Filter xsi:type="SimpleFilterPart">
+                        <Property>Name</Property>
+                        <SimpleOperator>equals</SimpleOperator>
+                        <Value>Name</Value>
+                    </Filter>
+                    <QueryAllAccounts>true</QueryAllAccounts>
+                </RetrieveRequest>
+            </RetrieveRequestMsg>
+        </soapenv:Body>
     </soapenv:Envelope>
 
 This request will return the following response:
